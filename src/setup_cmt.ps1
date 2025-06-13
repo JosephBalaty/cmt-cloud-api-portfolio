@@ -1,5 +1,4 @@
 Param(
-[Parameter(HelpMessage = "Specify whether current venv should be deleted.")]
 [boolean]$Delete = $true,
 [boolean]$Create = $true
 )
