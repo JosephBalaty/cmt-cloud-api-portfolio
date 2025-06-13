@@ -4,6 +4,8 @@ import io
 from google.cloud import datastore
 from google.cloud.datastore.query import PropertyFilter
 
+from properties.properties import *
+
 import requests
 import json
 
@@ -76,7 +78,7 @@ def verify_jwt(request):
                             "description":
                                 "Authorization header is missing"}, 401)
     
-    jsonurl = urlopen("https://"+ DOMAIN+"/.well-known/jwks.json")
+    jsonurl = urlopen("https://" + DOMAIN + "/.well-known/jwks.json")
     jwks = json.loads(jsonurl.read())
     try:
         unverified_header = jwt.get_unverified_header(token)
