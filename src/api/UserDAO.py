@@ -83,20 +83,17 @@ class UserDAO:
                                     "No RSA key in JWKS"}, HTTPStatus.UNAUTHORIZED)
 
     def login(self, login_info):
-        username = login_info["username"]
-        password = login_info["password"]
         body = {
-                'grant_type':'password',
-                'username':username,
-                'password':password,
-                'client_id':p.CLIENT_ID,
-                'client_secret':p.CLIENT_SECRET
+                'grant_type' : 'password',
+                'username' : login_info["username"],
+                'password' : login_info["password"],
+                'client_id' : p.CLIENT_ID,
+                'client_secret' : p.CLIENT_SECRET
             }
         headers = { 'content-type': 'application/json' }
         url = 'https://' + p.DOMAIN + '/oauth/token'
         r = requests.post(url, json=body, headers=headers)
-
-        return r.json()
+        return r
 
 
     def authenticate_user(self, payload):
@@ -121,5 +118,5 @@ class UserDAO:
         user = self.client.get(key=user_key)        
         if user:
             user['id'] = user.key.id
-        
+
         return user

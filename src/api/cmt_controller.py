@@ -15,6 +15,7 @@ from http import HTTPStatus
 
 import properties as p
 import UserService
+from exceptions import *
 
 
 # INITIALIZATION
@@ -53,4 +54,20 @@ def get_users():
 
 @app.route('/' + p.USERS + '/<int:user_id>', methods=['GET'])
 def get_user_by_id(user_id):
+    print(f'Getting user {user_id}...')
     return userService.get_user_by_id(request, user_id)
+
+"""
+@app.route('/' + p.USERS + '/<int:user_id>/' + AVATAR, methods=['POST'])
+def store_avatar(user_id):
+    print("Storing avatar for user " + user_id + "...")
+    return userService.store_avatar(request, user_id)
+"""
+
+# EXCEPTION HANDLER
+@app.errorhandler(CMT_Base_Exception)
+def handle_cmt_errors(ex):
+    print("Received an exception for:", ex.status_code, ex.error)
+    response = jsonify(ex.error)
+    response.status_code = ex.status_code
+    return response
