@@ -11,8 +11,10 @@ import io
 from six.moves.urllib.request import urlopen
 from jose import jwt
 from authlib.integrations.flask_client import OAuth
+from http import HTTPStatus
 
 import properties as p
+import UserService
 
 
 # INITIALIZATION
@@ -20,6 +22,7 @@ import properties as p
 app = Flask(__name__)
 oauth = OAuth(app)
 client = datastore.Client()
+userService = UserService.UserService()
 
 auth0 = oauth.register(
     'auth0',
@@ -38,13 +41,12 @@ if __name__ == '__main__':
 
 
 # ROUTE HANDLERS
-
-@app.route('/', methods=['GET'])
-def test_get():
-    print("Hello World!")
-    return {"Hello": "World!"}
-
-
 @app.route('/' + p.USERS + '/login', methods=['POST'])
 def user_login():
     print("Verifying login...")
+    return userService.verify_login(request)
+
+@app.route('/' + p.USERS, methods=['GET'])
+def get_users():
+    print("Getting users...")
+    return userService.get_users(), HTTPStatus.OK
