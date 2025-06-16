@@ -21,7 +21,6 @@ import UserService
 
 app = Flask(__name__)
 oauth = OAuth(app)
-client = datastore.Client()
 userService = UserService.UserService()
 
 auth0 = oauth.register(
@@ -41,6 +40,7 @@ if __name__ == '__main__':
 
 
 # ROUTE HANDLERS
+
 @app.route('/' + p.USERS + '/login', methods=['POST'])
 def user_login():
     print("Verifying login...")
@@ -49,4 +49,8 @@ def user_login():
 @app.route('/' + p.USERS, methods=['GET'])
 def get_users():
     print("Getting users...")
-    return userService.get_users(), HTTPStatus.OK
+    return userService.get_users(request)
+
+@app.route('/' + p.USERS + '/<int:user_id>', methods=['GET'])
+def get_user_by_id(user_id):
+    return userService.get_user_by_id(request, user_id)

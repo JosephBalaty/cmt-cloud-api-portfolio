@@ -13,9 +13,9 @@ CLIENT_SECRET = 'BvdqDHDEra8A7HJ0Ehr0__34_bft1Gw9mzh6oq_aXUV-EkurJ83IYgUzvFZwKpV
 DOMAIN = 'dev-yfv44873yxjene04.us.auth0.com'
 
 MISSING_FIELDS = { "Error": "The request body is invalid" }
-AUTHENTICATION_ERR = { "Error": "Unauthorized" }
+AUTHENTICATION_ERR = { "Error": "Invalid login credentials." }
 UNAUTHORIZED_ACCESS = { "Error": "You don't have permission on this resource" }
-MISSING_FILE_ERR = { "Error": "Not found" }
+MISSING_FILE_ERR = { "Error": "File not found" }
 ENROLLMENT_DATA_ERR = { "Error": "Enrollment data is invalid" }
 
 ALGORITHMS = ["RS256"]
