@@ -156,3 +156,14 @@ class UserDAO:
         user_avatar_query = self.client.query(kind=p.USER_AVATAR)
         user_avatar_query.add_filter(filter=PropertyFilter('user_id', '=', user_id))
         return list(user_avatar_query.fetch())
+    
+    def download_avatar(self, avatar_id):
+        blobs = self.storage_client.list_blobs(p.PHOTO_BUCKET)
+        file_obj = io.BytesIO()
+
+        for b in blobs:
+            if avatar_id == b.id:
+                b.download_to_file(file_obj)
+                file_obj.seek(0)
+                return send_file(file_obj, mimetype='image/x-png', download_name=b.name)
+        raise NotFound()

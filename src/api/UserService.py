@@ -2,6 +2,7 @@ import UserDAO
 from http import HTTPStatus
 import properties as p
 from exceptions import *
+import io
 
 
 
@@ -95,3 +96,22 @@ class UserService():
 
         self.userDao.create_user_avatar(request.files['file'], user_id)
         return { "avatar_url" : request.url }
+
+
+    def get_avatar(self, request, user_id):
+        payload = self.userDao.verify_jwt(request)
+        user = self.userDao.authenticate_user(payload)
+
+        if user.key.id != user_id:
+            raise UnauthorizedAccess()
+
+        
+        # Create a file object in memory using Python io package
+        file_obj = io.BytesIO()
+        result = self.userDao.get_user_avatar(user_id)
+
+        if len(result) == 1:
+            avatar_id = result[0]['avatar_id']
+            return self.userDao.download_avatar(avatar_id)
+        else:
+            raise NotFound()

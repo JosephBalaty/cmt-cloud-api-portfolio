@@ -63,6 +63,14 @@ def store_avatar(user_id):
     return userService.store_avatar(request, user_id)
 
 
+@app.route('/' + p.USERS + '/<int:user_id>/' + p.AVATAR, methods=['GET'])
+def get_avatar(user_id):
+    print(f'Getting avatar for user {user_id}...')
+    return userService.get_avatar(request, user_id)
+
+
+
+
 # EXCEPTION HANDLER
 @app.errorhandler(CMT_Base_Exception)
 def handle_cmt_errors(ex):
