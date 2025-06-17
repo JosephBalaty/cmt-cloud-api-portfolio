@@ -71,7 +71,7 @@ def get_avatar(user_id):
 
 @app.route('/' + p.USERS + '/<int:user_id>/' + p.AVATAR, methods=['DELETE'])
 def delete_avatar(user_id):
-    userService.delete_avatar(request, user_id)
+    return userService.delete_avatar(request, user_id)
 
 
 # EXCEPTION HANDLER

@@ -77,8 +77,6 @@ class UserService():
 
 
     def store_avatar(self, request, user_id):
-        # Any files in the request will be available in request.files object
-        # Check if there is an entry in request.files with the key 'file'
         if 'file' not in request.files:
             raise BadRequest(error=p.MISSING_FILE_ERR)
 
@@ -114,3 +112,19 @@ class UserService():
             return self.userDao.download_avatar(avatar_id)
         else:
             raise NotFound()
+    
+
+    def delete_avatar(self, request, user_id):
+        payload = self.userDao.verify_jwt(request)
+        user = self.userDao.authenticate_user(payload)
+        if user.key.id != user_id:
+            raise UnauthorizedAccess()
+        
+        result = self.userDao.get_user_avatar(user_id)
+        if len(result) == 1:
+            user_avatar = result[0]
+            self.userDao.delete_avatar(user_avatar)
+            return '', HTTPStatus.NO_CONTENT
+        else: 
+            raise NotFound()
+        
