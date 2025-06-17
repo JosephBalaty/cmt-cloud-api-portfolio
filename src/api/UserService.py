@@ -5,7 +5,6 @@ from exceptions import *
 import io
 
 
-
 class UserService():
 
     def __init__(self):
