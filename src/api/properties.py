@@ -1,5 +1,5 @@
 
-PHOTO_BUCKET='tarpaulin-cmt-joseph-balaty'
+PHOTO_BUCKET='tarpaulin-cmt-jb-portfolio'
 COURSES = 'courses'
 USERS = 'users'
 AVATAR = 'avatar'

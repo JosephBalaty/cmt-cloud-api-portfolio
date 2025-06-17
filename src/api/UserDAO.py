@@ -18,6 +18,37 @@ class UserDAO:
 
     def __init__(self):
         self.client = datastore.Client()
+        self.storage_client = storage.Client()
+
+    
+    def create_user_avatar(self, file_obj, user_id):
+        # Get a handle on the bucket
+        bucket = self.storage_client.get_bucket(p.PHOTO_BUCKET)
+        # Create a blob object for the bucket with the name of the file
+        blob = bucket.blob(file_obj.filename)
+        # Position the file_obj to its beginning
+        file_obj.seek(0)
+
+        # Upload the file into Cloud Storage
+        blob.upload_from_file(file_obj)
+        # update our user_avatar table with the id from the new file_obj.
+        user_avatar_key = self.client.key(p.USER_AVATAR)
+        new_user_avatar = datastore.Entity(key=user_avatar_key)
+        new_user_avatar.update({
+            'user_id': user_id,
+            'avatar_id': blob.id
+        })
+        self.client.put(new_user_avatar)
+
+
+    def delete_avatar(self, avatar):
+        avatar_id = avatar["avatar_id"]
+        blobs = self.storage_client.list_blobs(p.PHOTO_BUCKET)
+        for b in blobs:
+            if avatar_id == b.id:
+                b.delete()
+                break
+        self.client.delete(avatar)
 
 
     def verify_jwt(self, request):
@@ -120,3 +151,8 @@ class UserDAO:
             user['id'] = user.key.id
 
         return user
+
+    def get_user_avatar(self, user_id):
+        user_avatar_query = self.client.query(kind=p.USER_AVATAR)
+        user_avatar_query.add_filter(filter=PropertyFilter('user_id', '=', user_id))
+        return list(user_avatar_query.fetch())

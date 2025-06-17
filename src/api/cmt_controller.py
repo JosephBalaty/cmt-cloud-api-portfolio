@@ -57,12 +57,11 @@ def get_user_by_id(user_id):
     print(f'Getting user {user_id}...')
     return userService.get_user_by_id(request, user_id)
 
-"""
-@app.route('/' + p.USERS + '/<int:user_id>/' + AVATAR, methods=['POST'])
+@app.route('/' + p.USERS + '/<int:user_id>/' + p.AVATAR, methods=['POST'])
 def store_avatar(user_id):
-    print("Storing avatar for user " + user_id + "...")
+    print(f'Storing avatar for user {user_id}...')
     return userService.store_avatar(request, user_id)
-"""
+
 
 # EXCEPTION HANDLER
 @app.errorhandler(CMT_Base_Exception)
