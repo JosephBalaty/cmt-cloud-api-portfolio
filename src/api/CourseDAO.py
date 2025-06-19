@@ -23,15 +23,15 @@ class CourseDAO:
         new_key = self.client.key(p.COURSES)
         new_course = datastore.Entity(key=new_key)
         new_course.update({
-            'subject': content['subject'],
-            'number': int(content['number']),
-            'title': content['title'],
-            'term': content['term'],
-            'instructor_id': int(content['instructor_id'])
+            p.SUBJECT: content[p.SUBJECT],
+            p.NUMBER: int(content[p.NUMBER]),
+            p.TITLE: content[p.TITLE],
+            p.TERM: content[p.TERM],
+            p.INSTRUCTOR_ID: int(content[p.INSTRUCTOR_ID])
         })
 
         self.client.put(new_course)
-        new_course['id'] = new_course.key.id
-        new_course['self'] = f'{request.url}/{new_course['id']}'
+        new_course[p.ID] = new_course.key.id
+        new_course[p.SELF] = f'{request.url}/{new_course[p.ID]}'
 
         return new_course

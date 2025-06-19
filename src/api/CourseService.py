@@ -19,22 +19,22 @@ class CourseService():
         content = request.get_json()
 
         user = self.userDao.authenticate_user(payload)
-        if (user['role'] != 'admin'):
+        if (user[p.ROLE] != p.ADMIN):
             raise UnauthorizedAccess()
         
-        if ('instructor_id' not in content or
-            'subject' not in content or
-            'number' not in content or
-            'title' not in content or
-            'term' not in content):
+        if (p.INSTRUCTOR_ID not in content or
+            p.SUBJECT not in content or
+            p.NUMBER not in content or
+            p.TITLE not in content or
+            p.TERM not in content):
             raise BadRequest()
 
-        instr_id = int(content['instructor_id'])
+        instr_id = int(content[p.INSTRUCTOR_ID])
         instructor = self.userDao.get_user_by_id(instr_id)
-        if (instructor == None or instructor['role'] != 'instructor'):
+        if (instructor == None or instructor[p.ROLE] != p.INSTRUCTOR):
             raise BadRequest()
         
         new_course = self.courseDao.post_course(content)
-        crs_id = new_course['id']
+        crs_id = new_course[p.ID]
         self.courseInstructorDao.post_course_instructor(crs_id, instr_id)
         return new_course, HTTPStatus.CREATED
