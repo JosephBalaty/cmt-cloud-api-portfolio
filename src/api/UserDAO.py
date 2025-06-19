@@ -35,14 +35,14 @@ class UserDAO:
         user_avatar_key = self.client.key(p.USER_AVATAR)
         new_user_avatar = datastore.Entity(key=user_avatar_key)
         new_user_avatar.update({
-            'user_id': user_id,
-            'avatar_id': blob.id
+            p.USER_ID : user_id,
+            p.AVATAR_ID : blob.id
         })
         self.client.put(new_user_avatar)
 
 
     def delete_avatar(self, avatar):
-        avatar_id = avatar["avatar_id"]
+        avatar_id = avatar[p.AVATAR_ID]
         blobs = self.storage_client.list_blobs(p.PHOTO_BUCKET)
         for b in blobs:
             if avatar_id == b.id:
@@ -138,7 +138,7 @@ class UserDAO:
         query = self.client.query(kind=p.USERS)
         users = list(query.fetch())
         for u in users:
-            u['id'] = u.key.id
+            u[p.ID] = u.key.id
         return users
     
 
@@ -148,13 +148,13 @@ class UserDAO:
 
         user = self.client.get(key=user_key)        
         if user:
-            user['id'] = user.key.id
+            user[p.ID] = user.key.id
 
         return user
 
     def get_user_avatar(self, user_id):
         user_avatar_query = self.client.query(kind=p.USER_AVATAR)
-        user_avatar_query.add_filter(filter=PropertyFilter('user_id', '=', user_id))
+        user_avatar_query.add_filter(filter=PropertyFilter(p.USER_ID, '=', user_id))
         return list(user_avatar_query.fetch())
     
     def download_avatar(self, avatar_id):

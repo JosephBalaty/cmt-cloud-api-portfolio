@@ -16,6 +16,8 @@ TITLE = 'title'
 TERM = 'term'
 NUMBER = 'number'
 ID = 'id'
+USER_ID = 'user_id'
+AVATAR_ID = 'avatar_id'
 PATH_VARIABLE_INT_USER_ID = '<int:user_id>'
 SELF = 'self'
 
