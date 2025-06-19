@@ -15,8 +15,8 @@ class UserService():
     def verify_login(self, request):
         login_info = request.get_json()
 
-        if ('username' not in login_info or
-            'password' not in login_info):
+        if (p.USERNAME not in login_info or
+            p.PASSWORD not in login_info):
             raise BadRequest()
 
         reply = self.userDao.login(login_info)
@@ -24,13 +24,13 @@ class UserService():
             raise AuthError()
 
         reply = reply.json()
-        return {"token" : reply["id_token"]}, HTTPStatus.OK
+        return {p.TOKEN : reply[p.TOKEN_ID]}, HTTPStatus.OK
 
 
     def get_users(self, request):
         payload = self.userDao.verify_jwt(request)
         user = self.userDao.authenticate_user(payload)
-        if user['role'] != 'admin':
+        if user[p.ROLE] != p.ADMIN:
             raise UnauthorizedAccess()
         else:
             return self.userDao.get_users()
@@ -42,7 +42,7 @@ class UserService():
         searched_user = self.userDao.get_user_by_id(user_id)
 
         if (searched_user == None or 
-            (   (cur_user['role'] != 'admin') and 
+            (   (cur_user[p.ROLE] != p.ADMIN) and 
                 (cur_user.key.id != searched_user.key.id) )):
             raise UnauthorizedAccess()
 
@@ -81,7 +81,7 @@ class UserService():
 
 
     def store_avatar(self, request, user_id):
-        if 'file' not in request.files:
+        if p.FILE not in request.files:
             raise BadRequest(error=p.MISSING_FILE_ERR)
 
         payload = self.userDao.verify_jwt(request)
@@ -95,8 +95,8 @@ class UserService():
             user_avatar = result[0]
             self.userDao.delete_avatar(user_avatar)
 
-        self.userDao.create_user_avatar(request.files['file'], user_id)
-        return { "avatar_url" : request.url }
+        self.userDao.create_user_avatar(request.files[p.FILE], user_id)
+        return { p.AVATAR_URL : request.url }
 
 
     def get_avatar(self, request, user_id):
@@ -112,7 +112,7 @@ class UserService():
         result = self.userDao.get_user_avatar(user_id)
 
         if len(result) == 1:
-            avatar_id = result[0]['avatar_id']
+            avatar_id = result[0][p.AVATAR_ID]
             return self.userDao.download_avatar(avatar_id)
         else:
             raise NotFound()
