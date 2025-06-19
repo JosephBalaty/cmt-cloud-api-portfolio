@@ -16,6 +16,7 @@ TITLE = 'title'
 TERM = 'term'
 NUMBER = 'number'
 ID = 'id'
+PATH_VARIABLE_INT_USER_ID = '<int:user_id>'
 SELF = 'self'
 
 CLIENT_ID = '6ham7PycrY0SDBJRTLrDypqXgPQpvBBv'

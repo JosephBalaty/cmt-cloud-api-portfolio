@@ -55,25 +55,25 @@ def get_users():
     return userService.get_users(request)
 
 
-@app.route('/' + p.USERS + '/<int:user_id>', methods=['GET'])
+@app.route('/' + p.USERS + '/{p.PATH_VARIABLE_INT_USER_ID}', methods=['GET'])
 def get_user_by_id(user_id):
     print(f'Getting user {user_id}...')
     return userService.get_user_by_id(request, user_id)
 
 
-@app.route('/' + p.USERS + '/<int:user_id>/' + p.AVATAR, methods=['POST'])
+@app.route('/' + p.USERS + '/{p.PATH_VARIABLE_INT_USER_ID}/' + p.AVATAR, methods=['POST'])
 def store_avatar(user_id):
     print(f'Storing avatar for user {user_id}...')
     return userService.store_avatar(request, user_id)
 
 
-@app.route('/' + p.USERS + '/<int:user_id>/' + p.AVATAR, methods=['GET'])
+@app.route('/' + p.USERS + '/{p.PATH_VARIABLE_INT_USER_ID}/' + p.AVATAR, methods=['GET'])
 def get_avatar(user_id):
     print(f'Getting avatar for user {user_id}...')
     return userService.get_avatar(request, user_id)
 
 
-@app.route('/' + p.USERS + '/<int:user_id>/' + p.AVATAR, methods=['DELETE'])
+@app.route('/' + p.USERS + '/{p.PATH_VARIABLE_INT_USER_ID}/' + p.AVATAR, methods=['DELETE'])
 def delete_avatar(user_id):
     print(f'Deleting user {user_id}\' avatar...')
     return userService.delete_avatar(request, user_id)
