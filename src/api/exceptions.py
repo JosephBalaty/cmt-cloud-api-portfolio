@@ -5,7 +5,7 @@ class CMT_Base_Exception(Exception):
     pass
 
 class AuthError(CMT_Base_Exception):
-    def __init__(self, error, status_code):
+    def __init__(self, error=p.AUTHENTICATION_ERR, status_code=HTTPStatus.FORBIDDEN):
         self.error = error
         self.status_code = status_code
 

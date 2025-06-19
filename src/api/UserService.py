@@ -1,4 +1,4 @@
-import UserDAO
+import UserDAO, CourseDAO
 from http import HTTPStatus
 import properties as p
 from exceptions import *
@@ -9,6 +9,7 @@ class UserService():
 
     def __init__(self):
         self.userDao = UserDAO.UserDAO()
+        self.courseDao = CourseDAO.CourseDAO()
 
 
     def verify_login(self, request):
@@ -19,7 +20,10 @@ class UserService():
             raise BadRequest()
 
         reply = self.userDao.login(login_info)
-        reply = reply.raise_for_status().json()
+        if (reply.status_code == HTTPStatus.FORBIDDEN):
+            raise AuthError()
+
+        reply = reply.json()
         return {"token" : reply["id_token"]}, HTTPStatus.OK
 
 

@@ -14,7 +14,7 @@ from authlib.integrations.flask_client import OAuth
 from http import HTTPStatus
 
 import properties as p
-import UserService
+import UserService, CourseService
 from exceptions import *
 
 
@@ -23,6 +23,7 @@ from exceptions import *
 app = Flask(__name__)
 oauth = OAuth(app)
 userService = UserService.UserService()
+courseService = CourseService.CourseService()
 
 auth0 = oauth.register(
     'auth0',
@@ -47,15 +48,18 @@ def user_login():
     print("Verifying login...")
     return userService.verify_login(request)
 
+
 @app.route('/' + p.USERS, methods=['GET'])
 def get_users():
     print("Getting users...")
     return userService.get_users(request)
 
+
 @app.route('/' + p.USERS + '/<int:user_id>', methods=['GET'])
 def get_user_by_id(user_id):
     print(f'Getting user {user_id}...')
     return userService.get_user_by_id(request, user_id)
+
 
 @app.route('/' + p.USERS + '/<int:user_id>/' + p.AVATAR, methods=['POST'])
 def store_avatar(user_id):
@@ -71,8 +75,13 @@ def get_avatar(user_id):
 
 @app.route('/' + p.USERS + '/<int:user_id>/' + p.AVATAR, methods=['DELETE'])
 def delete_avatar(user_id):
+    print(f'Deleting user {user_id}\' avatar...')
     return userService.delete_avatar(request, user_id)
 
+
+@app.route('/' + p.COURSES, methods=['POST'])
+def post_course():
+    return courseService.post_course(request)
 
 # EXCEPTION HANDLER
 @app.errorhandler(CMT_Base_Exception)
