@@ -25,6 +25,7 @@ AVATAR_ID = 'avatar_id'
 AVATAR_URL = 'avatar_url'
 FILE = 'file'
 PATH_VARIABLE_INT_USER_ID = '<int:user_id>'
+PATH_VARIABLE_INT_COURSE_ID = '<int:course_id>'
 SELF = 'self'
 LOGIN = 'login'
 

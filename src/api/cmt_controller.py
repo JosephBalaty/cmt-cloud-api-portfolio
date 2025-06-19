@@ -89,6 +89,11 @@ def get_courses():
     return courseService.get_courses(request), HTTPStatus.OK
 
 
+@app.route('/' + p.COURSES + '/' + p.PATH_VARIABLE_INT_COURSE_ID, methods=['GET'])
+def get_course(course_id):
+    return courseService.get_course(request, course_id), HTTPStatus.OK
+
+
 # EXCEPTION HANDLER
 @app.errorhandler(CMT_Base_Exception)
 def handle_cmt_errors(ex):

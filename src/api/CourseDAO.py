@@ -53,3 +53,14 @@ class CourseDAO:
         reply['next'] = f'{request.base_url}?offset={offset+limit}&limit={limit}'
 
         return reply
+    
+    def get_course(self, course_id, url):
+        course_key = self.client.key(p.COURSES, course_id)
+        course = self.client.get(key=course_key)
+
+        if course == None:
+            raise NotFound()
+        else:
+            course[p.ID] = course.key.id
+            course[p.SELF] = url
+            return course

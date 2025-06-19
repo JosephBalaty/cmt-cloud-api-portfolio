@@ -46,3 +46,7 @@ class CourseService():
             offset = int(request.args['offset'])
         
         return self.courseDao.get_courses(limit, offset)
+
+
+    def get_course(self, request, course_id):
+        return self.courseDao.get_course(course_id, request.url)
