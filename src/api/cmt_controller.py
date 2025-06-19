@@ -43,45 +43,51 @@ if __name__ == '__main__':
 
 # ROUTE HANDLERS
 
-@app.route('/' + p.USERS + '/login', methods=['POST'])
+@app.route('/' + p.USERS + '/' + p.LOGIN, methods=['POST'])
 def user_login():
     print("Verifying login...")
-    return userService.verify_login(request)
+    return userService.verify_login(request), HTTPStatus.OK
 
 
 @app.route('/' + p.USERS, methods=['GET'])
 def get_users():
     print("Getting users...")
-    return userService.get_users(request)
+    return userService.get_users(request), HTTPStatus.OK
 
 
 @app.route('/' + p.USERS + '/{p.PATH_VARIABLE_INT_USER_ID}', methods=['GET'])
 def get_user_by_id(user_id):
     print(f'Getting user {user_id}...')
-    return userService.get_user_by_id(request, user_id)
+    return userService.get_user_by_id(request, user_id), HTTPStatus.OK
 
 
 @app.route('/' + p.USERS + '/{p.PATH_VARIABLE_INT_USER_ID}/' + p.AVATAR, methods=['POST'])
 def store_avatar(user_id):
     print(f'Storing avatar for user {user_id}...')
-    return userService.store_avatar(request, user_id)
+    return userService.store_avatar(request, user_id), HTTPStatus.OK
 
 
 @app.route('/' + p.USERS + '/{p.PATH_VARIABLE_INT_USER_ID}/' + p.AVATAR, methods=['GET'])
 def get_avatar(user_id):
     print(f'Getting avatar for user {user_id}...')
-    return userService.get_avatar(request, user_id)
+    return userService.get_avatar(request, user_id), HTTPStatus.OK
 
 
 @app.route('/' + p.USERS + '/{p.PATH_VARIABLE_INT_USER_ID}/' + p.AVATAR, methods=['DELETE'])
 def delete_avatar(user_id):
     print(f'Deleting user {user_id}\' avatar...')
-    return userService.delete_avatar(request, user_id)
+    return userService.delete_avatar(request, user_id), HTTPStatus.NO_CONTENT
 
 
 @app.route('/' + p.COURSES, methods=['POST'])
 def post_course():
-    return courseService.post_course(request)
+    return courseService.post_course(request), HTTPStatus.CREATED
+
+
+@app.route('/' + p.COURSES, methods=['GET'])
+def get_courses():
+    return courseService.get_courses(request), HTTPStatus.OK
+
 
 # EXCEPTION HANDLER
 @app.errorhandler(CMT_Base_Exception)

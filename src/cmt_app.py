@@ -460,7 +460,6 @@ def get_courses(offset=0, limit=3):
 
     query = client.query(kind=COURSES)
     query.order = ['subject']
-    query_params = request.args
     l_iterator = query.fetch(limit=limit, offset=offset)
     pages = l_iterator.pages
     results = list(next(pages))

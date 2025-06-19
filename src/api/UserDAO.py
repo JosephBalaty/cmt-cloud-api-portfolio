@@ -116,8 +116,8 @@ class UserDAO:
     def login(self, login_info):
         body = {
                 'grant_type' : 'password',
-                'username' : login_info["username"],
-                'password' : login_info["password"],
+                p.USERNAME : login_info[p.USERNAME],
+                p.PASSWORD : login_info[p.PASSWORD],
                 'client_id' : p.CLIENT_ID,
                 'client_secret' : p.CLIENT_SECRET
             }

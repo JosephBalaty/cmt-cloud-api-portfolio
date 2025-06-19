@@ -35,3 +35,21 @@ class CourseDAO:
         new_course[p.SELF] = f'{request.url}/{new_course[p.ID]}'
 
         return new_course
+    
+
+    def get_courses(self, limit, offset):
+        query = self.client.query(kind=p.COURSES)
+        query.order = [p.SUBJECT]
+        l_iterator = query.fetch(limit=limit, offset=offset)
+        pages = l_iterator.pages
+        results = list(next(pages))
+
+        for r in results:
+            r[p.ID] = r.key.id
+            r[p.SELF] = f'{request.base_url}/{r[p.ID]}'
+
+        reply = {}
+        reply[p.COURSES] = results
+        reply['next'] = f'{request.base_url}?offset={offset+limit}&limit={limit}'
+
+        return reply

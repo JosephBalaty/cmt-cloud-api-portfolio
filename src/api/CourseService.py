@@ -37,4 +37,12 @@ class CourseService():
         new_course = self.courseDao.post_course(content)
         crs_id = new_course[p.ID]
         self.courseInstructorDao.post_course_instructor(crs_id, instr_id)
-        return new_course, HTTPStatus.CREATED
+        return new_course
+
+        
+    def get_courses(self, request, offset=0, limit=3):
+        if len(request.args) == 2:
+            limit = int(request.args['limit'])
+            offset = int(request.args['offset'])
+        
+        return self.courseDao.get_courses(limit, offset)

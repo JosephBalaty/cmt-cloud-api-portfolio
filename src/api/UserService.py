@@ -24,7 +24,7 @@ class UserService():
             raise AuthError()
 
         reply = reply.json()
-        return {p.TOKEN : reply[p.TOKEN_ID]}, HTTPStatus.OK
+        return {p.TOKEN : reply[p.TOKEN_ID]}
 
 
     def get_users(self, request):
@@ -128,7 +128,7 @@ class UserService():
         if len(result) == 1:
             user_avatar = result[0]
             self.userDao.delete_avatar(user_avatar)
-            return '', HTTPStatus.NO_CONTENT
+            return ''
         else: 
             raise NotFound()
         
