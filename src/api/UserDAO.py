@@ -121,7 +121,7 @@ class UserDAO:
                 'client_id' : p.CLIENT_ID,
                 'client_secret' : p.CLIENT_SECRET
             }
-        headers = { 'content-type': 'application/json' }
+        headers = { 'content-type' : 'application/json' }
         url = 'https://' + p.DOMAIN + '/oauth/token'
         r = requests.post(url, json=body, headers=headers)
         return r

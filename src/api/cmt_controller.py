@@ -93,6 +93,10 @@ def get_courses():
 def get_course(course_id):
     return courseService.get_course(request, course_id), HTTPStatus.OK
 
+@app.route('/' + p.COURSES + '/' + p.PATH_VARIABLE_INT_COURSE_ID, methods=['PATCH'])
+def update_course(course_id):
+    return courseService.update_course(request, course_id)
+
 
 # EXCEPTION HANDLER
 @app.errorhandler(CMT_Base_Exception)

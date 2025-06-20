@@ -54,6 +54,7 @@ class CourseDAO:
 
         return reply
     
+
     def get_course(self, course_id, url):
         course_key = self.client.key(p.COURSES, course_id)
         course = self.client.get(key=course_key)
@@ -64,3 +65,16 @@ class CourseDAO:
             course[p.ID] = course.key.id
             course[p.SELF] = url
             return course
+        
+
+    def patch_course(self, content, course):
+        new_data = {}
+        for key in content:
+            new_data[key] = content[key]
+        course.update(new_data)
+        self.client.put(course)
+
+        course[p.ID] = course.key.id
+        course[p.SELF] = content[p.URL]
+
+        return course

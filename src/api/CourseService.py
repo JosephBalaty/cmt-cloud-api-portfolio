@@ -50,3 +50,30 @@ class CourseService():
 
     def get_course(self, request, course_id):
         return self.courseDao.get_course(course_id, request.url)
+    
+
+    def update_course(self, request, course_id):
+        payload = self.userDao.verify_jwt(request)
+        content = request.get_json()
+
+        user = self.userDao.authenticate_user(payload)
+        if user[p.ROLE] != p.ADMIN:
+            raise UnauthorizedAccess()
+        
+        course = self.get_course(course_id, request.url)
+        if course == None:
+            raise NotFound()
+        
+        if p.INSTRUCTOR_ID in content:
+            content[p.INSTRUCTOR_ID] = int(content[p.INSTRUCTOR_ID])
+            istr = self.userDao.get_user_by_id(content[p.INSTRUCTOR_ID])
+            if (istr == None or 
+                istr[p.ROLE] != p.INSTRUCTOR):
+                raise UnauthorizedAccess()
+            elif content[p.INSTRUCTOR_ID] != course[p.INSTRUCTOR_ID]:
+                self.courseInstructorDao.patch_course_instructor(course_id, 
+                                                                 content[p.INSTRUCTOR_ID])
+        if p.NUMBER in content:
+            content[p.NUMBER] = int(content[p.NUMBER])
+        
+        return self.courseDao.patch_course(content, course)
